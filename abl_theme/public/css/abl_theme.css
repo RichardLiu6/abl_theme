@@ -1,0 +1,28 @@
+/* ============================================================
+   abl_theme — ABL 展示层全局 CSS（只放展示层规则，禁业务逻辑，见 README）
+   ============================================================ */
+
+/* [2026-07-13] App 切换器宫格：双语标题「中文 English」两行显示。
+   病根：Frappe 对 .icon-title 写死 white-space:nowrap + overflow:hidden，
+   双语标题变长后横向溢出、相邻格子互相压字。
+   放开换行后，双语值中英之间的空格 = 天然断行点 → 第一行中文、第二行英文，
+   宽度由 max-width 锁定。 */
+.desktop-icon .icon-caption,
+.desktop-icon .icon-title {
+  white-space: normal !important;
+  overflow-wrap: break-word;
+  text-align: center;
+  -webkit-line-clamp: unset !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+.desktop-icon .icon-title {
+  max-width: 118px;
+  line-height: 1.3;
+  margin: 0 auto;
+}
+
+.desktop-icon {
+  height: auto !important;
+}
