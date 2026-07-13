@@ -2,10 +2,15 @@
 name = "abl_theme"
 authors = [{ name = "American Best Life", email = "haoyu@americanbestlife.com" }]
 description = "ABL ERPNext desk presentation theme (display-layer CSS/JS only, no business logic)"
-requires-python = ">=3.10"
+requires-python = ">=3.14"
 readme = "README.md"
 dynamic = ["version"]
 
 [build-system]
 requires = ["flit_core >=3.4,<4"]
 build-backend = "flit_core.buildapi"
+
+# Frappe Cloud 官方要求（docs.frappe.io/cloud/custom-apps/app-versioning）：
+# 自定义 app 必须声明兼容的 Frappe 版本范围，FC 在加 app/更新/安装时校验
+[tool.bench.frappe-dependencies]
+frappe = ">=16.0.0,<17.0.0"
