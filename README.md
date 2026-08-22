@@ -28,4 +28,4 @@ GitHub repo（本仓库）→ Frappe Cloud bench「Add App」→ Deploy → 站�
 
 ## 验证
 
-翻译/布局回归：`docs/supplychain/erpnext/scripts/ui-eval/verify_workspaces.mjs`（含宫格标签断言）。
+翻译/布局回归：`abl-erpnext/scripts/ui-eval/verify_workspaces.mjs`（含宫格标签断言）。
