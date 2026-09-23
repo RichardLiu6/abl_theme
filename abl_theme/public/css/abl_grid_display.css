@@ -1,0 +1,72 @@
+/* ============================================================
+   abl_theme — 子表高密度展示（纯展示层 CSS，禁业务逻辑，见 README）
+   全部规则挂在 body.abl-gd-on（JS 启用时加）与 .abl-gd（已增强的 Table 控件）之下：
+   JS 未加载 / __ablGridDisplay.disable() 后，本文件完全不生效。
+   不改任何列宽（尊重 GridView 个人宽度与 sticky 偏移）、不改列顺序。
+   ============================================================ */
+
+/* ---------- 1 版面：含普通 Table 的 section 解除 900px 上限；表单右侧栏缩窄 ---------- */
+body.abl-gd-on .page-container .form-layout .section-body:has(> .form-column .frappe-control.abl-gd) {
+  max-width: none !important;
+}
+body.abl-gd-on .page-container .layout-side-section.right:has(.form-sidebar) {
+  width: 196px !important; min-width: 196px !important; max-width: 196px !important; flex: 0 0 196px !important;
+}
+body.abl-gd-on .page-container .layout-side-section.right .form-sidebar { width: 100% !important; min-width: 0 !important; }
+body.abl-gd-on .page-container .layout-side-section.right .form-sidebar .sidebar-section { padding-top: 6px !important; padding-bottom: 6px !important; }
+
+/* ---------- 2 行数控件（稳定 class：.abl-grid-lines-ctl） ---------- */
+body.abl-gd-on .abl-gd .abl-grid-lines-ctl { display: flex; align-items: center; gap: 6px; margin: 0 0 6px; font-size: 12px; color: var(--text-muted); }
+body.abl-gd-on .abl-gd .abl-grid-lines-ctl-seg { display: inline-flex; border: 1px solid var(--border-color); border-radius: 6px; overflow: hidden; }
+body.abl-gd-on .abl-gd .abl-grid-lines-ctl button { border: 0; background: transparent; padding: 2px 10px; font-size: 12px; line-height: 18px; cursor: pointer; color: inherit; }
+body.abl-gd-on .abl-gd .abl-grid-lines-ctl button + button { border-left: 1px solid var(--border-color); }
+body.abl-gd-on .abl-gd .abl-grid-lines-ctl button[aria-pressed="true"] { background: var(--text-color); color: var(--bg-color); }
+
+/* ---------- 3 表头：双语两行、完整显示（高度随内容） ---------- */
+body.abl-gd-on .abl-gd .grid-heading-row,
+body.abl-gd-on .abl-gd .grid-heading-row .grid-row,
+body.abl-gd-on .abl-gd .grid-heading-row .data-row { height: auto !important; min-height: 32px; }
+body.abl-gd-on .abl-gd .grid-heading-row .grid-static-col { height: auto !important; padding-top: 3px !important; padding-bottom: 3px !important; }
+body.abl-gd-on .abl-gd .grid-heading-row .static-area {
+  white-space: normal !important; line-height: 1.15; height: auto !important; max-height: none !important;
+  overflow: visible !important; overflow-wrap: anywhere;
+}
+body.abl-gd-on .abl-gd .grid-heading-row .abl-gd-en { display: block; font-size: 11px; opacity: .65; font-weight: 400; white-space: normal !important; overflow-wrap: anywhere; }
+
+/* ---------- 4 静态行（行内无可见编辑器）：紧凑 + 高度随内容；编辑行完全交还原生 ---------- */
+body.abl-gd-on .abl-gd .grid-body .grid-row:not(:has(.field-area:not([style*="display: none"]))) .data-row {
+  height: auto !important; min-height: 36px; align-items: stretch;
+}
+body.abl-gd-on .abl-gd .grid-body .grid-row:not(:has(.field-area:not([style*="display: none"]))) .grid-static-col,
+body.abl-gd-on .abl-gd .grid-body .grid-row:not(:has(.field-area:not([style*="display: none"]))) .row-index,
+body.abl-gd-on .abl-gd .grid-body .grid-row:not(:has(.field-area:not([style*="display: none"]))) .row-check {
+  height: auto !important;
+}
+body.abl-gd-on .abl-gd .grid-body .grid-row:not(:has(.field-area:not([style*="display: none"]))) .grid-static-col {
+  padding-top: 4px !important; padding-bottom: 4px !important;
+}
+body.abl-gd-on .abl-gd .grid-static-col .static-area { font-size: 12px; line-height: 1.3; font-variant-numeric: tabular-nums; }
+
+/* ---------- 5 长文本：按字段类型 line-clamp（N = --abl-gd-lines，默认 3） ---------- */
+body.abl-gd-on .abl-gd .grid-body .grid-row:not(:has(.field-area:not([style*="display: none"]))) .grid-static-col:is(
+  [data-fieldtype="Data"], [data-fieldtype="Small Text"], [data-fieldtype="Text"], [data-fieldtype="Long Text"],
+  [data-fieldtype="Text Editor"], [data-fieldtype="Markdown Editor"], [data-fieldtype="Link"], [data-fieldtype="Select"],
+  [data-fieldtype="Read Only"], [data-fieldtype="Autocomplete"]
+) .static-area {
+  white-space: normal !important; display: -webkit-box !important; -webkit-box-orient: vertical;
+  -webkit-line-clamp: var(--abl-gd-lines, 3); overflow: hidden; text-overflow: clip; overflow-wrap: anywhere;
+  height: auto !important; max-height: none !important;
+}
+
+/* ---------- 6 编码 / 数字 / 日期：强制单行（仅表体；与第 5 条同前缀 → 同优先级、源码在后胜出） ---------- */
+body.abl-gd-on .abl-gd .grid-body .grid-row:not(:has(.field-area:not([style*="display: none"]))) .grid-static-col:is(
+  [data-fieldtype="Int"], [data-fieldtype="Float"], [data-fieldtype="Currency"], [data-fieldtype="Percent"],
+  [data-fieldtype="Date"], [data-fieldtype="Datetime"], [data-fieldtype="Time"], [data-fieldtype="Duration"],
+  [data-fieldtype="Check"], [data-fieldtype="Rating"], [data-fieldtype="Barcode"], [data-fieldtype="Dynamic Link"],
+  [data-fieldname="item_code"], [data-fieldname$="_code"], [data-fieldname$="_no"], [data-fieldname*="batch"],
+  [data-fieldname*="serial"], [data-fieldname$="_sku"], [data-fieldname="sku"], [data-fieldname*="barcode"],
+  [data-fieldname="uom"], [data-fieldname$="_uom"]
+) .static-area {
+  white-space: nowrap !important; display: block !important; -webkit-line-clamp: unset !important;
+  overflow: hidden; text-overflow: ellipsis;
+}
