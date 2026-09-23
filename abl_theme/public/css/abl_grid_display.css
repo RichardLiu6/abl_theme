@@ -9,11 +9,12 @@
 body.abl-gd-on .page-container .form-layout .section-body:has(> .form-column .frappe-control.abl-gd) {
   max-width: none !important;
 }
-body.abl-gd-on .page-container .layout-side-section.right:has(.form-sidebar) {
+/* 侧栏缩窄只在「含已增强 Table 的表单页」生效；无 Table 的表单不受影响（hidden Table 也算含表，控件随之隐藏） */
+body.abl-gd-on .page-container:has(.frappe-control.abl-gd) .layout-side-section.right:has(.form-sidebar) {
   width: 196px !important; min-width: 196px !important; max-width: 196px !important; flex: 0 0 196px !important;
 }
-body.abl-gd-on .page-container .layout-side-section.right .form-sidebar { width: 100% !important; min-width: 0 !important; }
-body.abl-gd-on .page-container .layout-side-section.right .form-sidebar .sidebar-section { padding-top: 6px !important; padding-bottom: 6px !important; }
+body.abl-gd-on .page-container:has(.frappe-control.abl-gd) .layout-side-section.right .form-sidebar { width: 100% !important; min-width: 0 !important; }
+body.abl-gd-on .page-container:has(.frappe-control.abl-gd) .layout-side-section.right .form-sidebar .sidebar-section { padding-top: 6px !important; padding-bottom: 6px !important; }
 
 /* ---------- 2 行数控件（稳定 class：.abl-grid-lines-ctl） ---------- */
 body.abl-gd-on .abl-gd .abl-grid-lines-ctl { display: flex; align-items: center; gap: 6px; margin: 0 0 6px; font-size: 12px; color: var(--text-muted); }

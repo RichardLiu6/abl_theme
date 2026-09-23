@@ -16,7 +16,7 @@
    ============================================================ */
 (function () {
   'use strict';
-  var VERSION = '1.0.0-rc1';
+  var VERSION = '1.0.0-rc2';
   var LINE_OPTS = [[1, '单行'], [3, '3行'], [5, '5行']];
   var DEFAULT_LINES = 3;
   var ROOT_CLS = 'abl-gd';
@@ -46,11 +46,22 @@
     }
   }
 
+  // 拥有该控件的 frm：按页面容器 id「page-<DocType>」反查 formview，避免把隐藏旧页写进当前页 key
+  function ownerFrm(el) {
+    var pc = el && el.closest && el.closest('.page-container[id^="page-"]');
+    var dt = pc ? pc.id.slice(5) : null;
+    var fv = dt && frappe.views && frappe.views.formview && frappe.views.formview[dt];
+    if (fv && fv.frm) return fv.frm;
+    return (window.cur_frm && dt && cur_frm.doctype === dt) ? cur_frm : null;
+  }
+  function currentWrapper() {                             // 当前可见表单的 wrapper（setLines 默认作用域）
+    var f = window.cur_frm;
+    var w = f && f.page && f.page.wrapper;
+    return w ? (w.get ? w.get(0) : w) : null;
+  }
   function keyFor(ctl) {
-    var frm = window.cur_frm;
-    var dt = (frm && frm.doctype) || '';
-    var dn = (frm && frm.docname) || '';
-    return dt + '::' + dn + '::' + (ctl.getAttribute('data-fieldname') || '');
+    var frm = ownerFrm(ctl);
+    return (frm ? frm.doctype + '::' + frm.docname : '?::?') + '::' + (ctl.getAttribute('data-fieldname') || '');
   }
   function eligible(ctl) {
     return ctl && ctl.matches(TABLE_SEL) && !ctl.closest(EXCLUDE_SEL) && !!ctl.closest('.form-layout');
@@ -184,7 +195,9 @@
     enhance(document);
     return api.status();
   }
-  function disable() {                                    // 撤销：移除全部视觉改动（刷新页面效果相同）
+  // 撤销边界：样式 / 行数控件 / 表头拆分 / title / 事件立即恢复；Item formatter 立即还原，
+  // 但【已渲染】的品号单元格不会自动重绘回「code: name」——刷新页面（或该表下次原生重绘）才恢复。
+  function disable() {
     enabled = false;
     document.body.classList.remove(BODY_ON);
     document.removeEventListener('click', onClick, true);
@@ -216,10 +229,12 @@
     enable: enable,
     disable: disable,
     enhance: function (root) { return enhance(root || document); },
-    // setLines(n) = 当前页面所有已增强表；setLines(n, el) = 指定 Table 控件（或其内部任一元素）
+    // setLines(n) = 当前可见表单（cur_frm.page.wrapper）内所有已增强表；setLines(n, el) = 指定 Table 控件（或其内部任一元素）
     setLines: function (n, el) {
       if (LINE_OPTS.map(function (o) { return o[0]; }).indexOf(n) < 0) throw new Error('lines must be 1, 3 or 5');
-      var targets = el ? [el.closest ? el.closest('.' + ROOT_CLS) : null] : Array.prototype.slice.call(document.querySelectorAll('.' + ROOT_CLS));
+      var scope = currentWrapper();
+      var targets = el ? [el.closest ? el.closest('.' + ROOT_CLS) : null]
+                       : (scope ? Array.prototype.slice.call(scope.querySelectorAll('.' + ROOT_CLS)) : []);
       targets.forEach(function (c) { if (c) { lines.set(keyFor(c), n); applyLines(c, n); } });
       return targets.filter(Boolean).length;
     },
