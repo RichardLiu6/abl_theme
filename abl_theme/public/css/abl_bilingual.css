@@ -11,6 +11,11 @@
   line-height: 1.25;
 }
 .standard-sidebar-item { height: auto !important; min-height: 28px; }
+.standard-sidebar-item .item-anchor {
+  height: auto !important;
+  min-height: 28px;
+  white-space: normal !important;
+}
 
 /* 工作台链接卡（Reports & Masters 等卡片里的链接） */
 .links-widget-box .link-item .link-content.ellipsis,
