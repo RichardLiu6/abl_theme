@@ -2,7 +2,7 @@
    abl_theme — 子表高密度展示（纯展示层 JS，禁业务逻辑，见 README）
    ------------------------------------------------------------
    作用：标准 Form 内所有普通 Table（Grid）统一：
-     · 表格上方「显示行数 Rows：单行｜3行｜5行」控件（默认 3，页内状态，不持久化）
+     · 表格上方「显示行数 Rows：单行 1 line｜3行 3 lines｜5行 5 lines」控件（默认 3，页内状态，不持久化）
      · 双语表头拆两行（中文 / English）
      · 长文本单元格按 CSS 变量 --abl-gd-lines 统一 line-clamp；编码/数字单行（CSS 按字段类型/字段名判定）
      · 截断单元格 hover 出全文（事件委托，按需设 title，不扫描）
@@ -17,7 +17,7 @@
 (function () {
   'use strict';
   var VERSION = '1.0.0-rc2';
-  var LINE_OPTS = [[1, '单行'], [3, '3行'], [5, '5行']];
+  var LINE_OPTS = [[1, '单行 1 line'], [3, '3行 3 lines'], [5, '5行 5 lines']];
   var DEFAULT_LINES = 3;
   var ROOT_CLS = 'abl-gd';
   var CTL_CLS = 'abl-grid-lines-ctl';
