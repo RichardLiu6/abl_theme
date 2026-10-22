@@ -74,6 +74,21 @@
   text-overflow: clip !important;
 }
 
+/* [10-22 升级前置 M1] Frappe 16.50 起列表状态改用 Espresso 徽章 .es-badge（文字在 .es-badge__label 里，
+   原生 nowrap + ellipsis）。规则同上；旧版本页面里没有这个 class，不生效也无害。 */
+.list-row .list-row-col .es-badge {
+  max-width: 100% !important;
+  height: auto !important;
+  min-height: 20px;
+  white-space: normal !important;
+  line-height: 1.2;
+}
+.list-row .list-row-col .es-badge > .es-badge__label {
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+}
+
 /* 列表顶部快速筛选栏的输入框占位文字（input placeholder 无法换行）：字号略小，让「审核人员 Reviewed By」放得下 */
 .standard-filter-section .frappe-control input::placeholder {
   font-size: 11px;
