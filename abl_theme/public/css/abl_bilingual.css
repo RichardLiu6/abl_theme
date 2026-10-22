@@ -1,0 +1,76 @@
+/* [2026-10-22] 双语可见性：中英双语标签「中文 English」不得被截断成「研发物料 R&D Mater…」。
+   只对【界面标签】放开换行（列表列头 / 侧栏项 / 工作台链接卡 / 筛选栏占位 / 快捷方式与统计卡标题），
+   中英之间的空格即天然断行点；数据单元格（单号、物料名等）保持原生省略号不动。 */
+
+/* 左侧栏项（Workspace Sidebar） */
+.sidebar-item-label,
+.standard-sidebar-item .sidebar-item-label {
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  line-height: 1.25;
+}
+.standard-sidebar-item { height: auto !important; min-height: 28px; }
+
+/* 工作台链接卡（Reports & Masters 等卡片里的链接） */
+.links-widget-box .link-item .link-content.ellipsis,
+.link-item .link-content.ellipsis {
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  line-height: 1.3;
+}
+.links-widget-box .link-item { height: auto !important; align-items: flex-start; }
+
+/* 快捷方式 / 统计卡 / 图表标题 */
+.widget .widget-head .widget-title,
+.widget .widget-title .ellipsis,
+.number-widget-box .widget-title {
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+}
+
+/* 列表视图列头 */
+.list-row-head .list-row-col,
+.list-row-head .list-row-col span,
+.list-row-head .list-subject {
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  line-height: 1.25;
+}
+.list-row-head { height: auto !important; min-height: 40px; }
+
+/* 列表顶部快速筛选栏 Select 占位文字 */
+.standard-filter-section .placeholder.ellipsis {
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  line-height: 1.15;
+  font-size: 11px;
+}
+
+/* 列表状态胶囊（如「待出货与开票 To Deliver and Bill」「仓库调拨 Material Transfer」）：
+   原生 max-width:150px 截断 → 放宽到所在列宽，仍放不下时折成两行 */
+.list-row .list-row-col .indicator-pill {
+  max-width: 100% !important;
+  height: auto !important;
+  min-height: 20px;
+  white-space: normal !important;
+  text-overflow: clip !important;
+  line-height: 1.2;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+.list-row .list-row-col .indicator-pill > .ellipsis {
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+}
+
+/* 列表顶部快速筛选栏的输入框占位文字（input placeholder 无法换行）：字号略小，让「审核人员 Reviewed By」放得下 */
+.standard-filter-section .frappe-control input::placeholder {
+  font-size: 11px;
+  letter-spacing: -0.1px;
+}

@@ -8,6 +8,7 @@ app_license = "mit"
 app_include_css = [
     "/assets/abl_theme/css/abl_theme.css",
     "/assets/abl_theme/css/abl_grid_display.css",
+    "/assets/abl_theme/css/abl_bilingual.css",
 ]
 # 子表高密度展示（纯展示层 JS；测试入口 window.__ablGridDisplay）
 app_include_js = [
